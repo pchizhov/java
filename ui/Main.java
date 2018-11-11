@@ -11,7 +11,6 @@ public class Main {
             new Authorisation(new LoginManager(new UserRepo())).authorise();
             new Menu().start();
             DatabaseManager.disconnect();
-            System.out.println("Thank you for using");
         }
     }
 }
