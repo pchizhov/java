@@ -29,6 +29,7 @@ public class StudentsResultsRepo implements IRepository<StudentsResults> {
         }
         catch (SQLException e) {
             System.out.println(e.getMessage());
+            connection.rollback();
             return null;
         }
         finally {
@@ -56,6 +57,7 @@ public class StudentsResultsRepo implements IRepository<StudentsResults> {
         }
         catch (SQLException e) {
             System.out.println(e.getMessage());
+            connection.rollback();
             return null;
         }
         finally {
@@ -82,6 +84,7 @@ public class StudentsResultsRepo implements IRepository<StudentsResults> {
         }
         catch (SQLException e) {
             System.out.println(e.getMessage());
+            connection.rollback();
         }
         finally {
             if (pstmt != null) {
@@ -102,6 +105,7 @@ public class StudentsResultsRepo implements IRepository<StudentsResults> {
         }
         catch (SQLException e) {
             System.out.println(e.getMessage());
+            connection.rollback();
         }
         finally {
             if (pstmt != null) {

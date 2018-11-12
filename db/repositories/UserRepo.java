@@ -28,6 +28,7 @@ public class UserRepo implements IRepository<User> {
         }
         catch (SQLException e) {
             System.out.println(e.getMessage());
+            connection.rollback();
             return null;
         }
         finally {
@@ -55,6 +56,7 @@ public class UserRepo implements IRepository<User> {
         }
         catch (SQLException e) {
             System.out.println(e.getMessage());
+            connection.rollback();
             return null;
         }
         finally {
@@ -85,6 +87,7 @@ public class UserRepo implements IRepository<User> {
         }
         catch (SQLException e) {
             System.out.println(e.getMessage());
+            connection.rollback();
         }
         finally {
             if (pstmt != null) {
@@ -105,6 +108,7 @@ public class UserRepo implements IRepository<User> {
         }
         catch (SQLException e) {
             System.out.println(e.getMessage());
+            connection.rollback();
         }
         finally {
             if (pstmt != null) {

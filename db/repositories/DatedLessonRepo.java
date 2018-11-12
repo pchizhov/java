@@ -31,6 +31,7 @@ public class DatedLessonRepo implements IRepository<DatedLesson> {
         }
         catch (SQLException e) {
             System.out.println(e.getMessage());
+            connection.rollback();
             return null;
         }
         finally {
@@ -59,6 +60,7 @@ public class DatedLessonRepo implements IRepository<DatedLesson> {
         }
         catch (SQLException e) {
             System.out.println(e.getMessage());
+            connection.rollback();
             return null;
         }
         finally {
@@ -87,6 +89,7 @@ public class DatedLessonRepo implements IRepository<DatedLesson> {
         }
         catch (SQLException e) {
             System.out.println(e.getMessage());
+            connection.rollback();
             return null;
         }
         finally {
@@ -116,6 +119,7 @@ public class DatedLessonRepo implements IRepository<DatedLesson> {
         }
         catch (SQLException e) {
             System.out.println(e.getMessage());
+            connection.rollback();
         }
         finally {
             if (pstmt != null) {
@@ -136,6 +140,7 @@ public class DatedLessonRepo implements IRepository<DatedLesson> {
         }
         catch (SQLException e) {
             System.out.println(e.getMessage());
+            connection.rollback();
         }
         finally {
             if (pstmt != null) {
