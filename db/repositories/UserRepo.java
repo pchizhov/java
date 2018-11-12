@@ -13,6 +13,7 @@ public class UserRepo implements IRepository<User> {
 
     @Override
     public User get(String id) throws SQLException {
+        connection.setAutoCommit(false);
         PreparedStatement pstmt = null;
         try {
             pstmt = connection.prepareStatement("SELECT * FROM 'user' where login = ?");
@@ -32,12 +33,14 @@ public class UserRepo implements IRepository<User> {
         finally {
             if (pstmt != null) {
                 pstmt.close();
+                connection.commit();
             }
         }
     }
 
     @Override
     public ArrayList<User> list() throws SQLException {
+        connection.setAutoCommit(false);
         Statement stmt = null;
         try {
             stmt = connection.createStatement();
@@ -57,12 +60,14 @@ public class UserRepo implements IRepository<User> {
         finally {
             if (stmt != null) {
                 stmt.close();
+                connection.commit();
             }
         }
     }
 
     @Override
     public void update(User user) throws SQLException {
+        connection.setAutoCommit(false);
         PreparedStatement pstmt = null;
         String sql = "UPDATE 'user' SET login=?, password=?, name=?, role=?, group=? WHERE login = ?";
         try {
@@ -84,12 +89,14 @@ public class UserRepo implements IRepository<User> {
         finally {
             if (pstmt != null) {
                 pstmt.close();
+                connection.commit();
             }
         }
     }
 
     @Override
     public void delete(String id) throws SQLException {
+        connection.setAutoCommit(false);
         PreparedStatement pstmt = null;
         try {
             pstmt = connection.prepareStatement("DELETE FROM 'user' where login = ?");
@@ -102,6 +109,7 @@ public class UserRepo implements IRepository<User> {
         finally {
             if (pstmt != null) {
                 pstmt.close();
+                connection.commit();
             }
         }
     }

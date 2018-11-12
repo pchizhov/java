@@ -12,6 +12,7 @@ public class GroupRepo implements IRepository<Group> {
 
     @Override
     public Group get(String id) throws SQLException {
+        connection.setAutoCommit(false);
         PreparedStatement pstmt = null;
         try {
             pstmt = connection.prepareStatement("SELECT * FROM 'group' WHERE number = ?");
@@ -29,12 +30,14 @@ public class GroupRepo implements IRepository<Group> {
         finally {
             if (pstmt != null) {
                 pstmt.close();
+                connection.commit();
             }
         }
     }
 
     @Override
     public ArrayList<Group> list() throws SQLException {
+        connection.setAutoCommit(false);
         Statement stmt = null;
         try {
             stmt = connection.createStatement();
@@ -52,12 +55,14 @@ public class GroupRepo implements IRepository<Group> {
         finally {
             if (stmt != null) {
                 stmt.close();
+                connection.commit();
             }
         }
     }
 
     @Override
     public void update(Group group) throws SQLException {
+        connection.setAutoCommit(false);
         PreparedStatement pstmt = null;
         String sql = "UPDATE 'group' SET number=?, level=? WHERE number = ?";
         try {
@@ -73,12 +78,14 @@ public class GroupRepo implements IRepository<Group> {
         finally {
             if (pstmt != null) {
                 pstmt.close();
+                connection.commit();
             }
         }
     }
 
     @Override
     public void delete(String id) throws SQLException {
+        connection.setAutoCommit(false);
         PreparedStatement pstmt = null;
         try {
             pstmt = connection.prepareStatement("DELETE FROM 'group' where number = ?");
@@ -91,6 +98,7 @@ public class GroupRepo implements IRepository<Group> {
         finally {
             if (pstmt != null) {
                 pstmt.close();
+                connection.commit();
             }
         }
     }

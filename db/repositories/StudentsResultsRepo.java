@@ -14,6 +14,7 @@ public class StudentsResultsRepo implements IRepository<StudentsResults> {
 
     @Override
     public StudentsResults get(String id) throws SQLException {
+        connection.setAutoCommit(false);
         PreparedStatement pstmt = null;
         try {
             pstmt = connection.prepareStatement("SELECT * FROM 'studentsresults' WHERE id = ?");
@@ -33,12 +34,14 @@ public class StudentsResultsRepo implements IRepository<StudentsResults> {
         finally {
             if (pstmt != null) {
                 pstmt.close();
+                connection.commit();
             }
         }
     }
 
     @Override
     public ArrayList<StudentsResults> list() throws SQLException {
+        connection.setAutoCommit(false);
         Statement stmt = null;
         try {
             stmt = connection.createStatement();
@@ -58,12 +61,14 @@ public class StudentsResultsRepo implements IRepository<StudentsResults> {
         finally {
             if (stmt != null) {
                 stmt.close();
+                connection.commit();
             }
         }
     }
 
     @Override
     public void update(StudentsResults studentsResults) throws SQLException {
+        connection.setAutoCommit(false);
         PreparedStatement pstmt = null;
         String sql = "UPDATE 'studentsresults' SET id = ?, datedlesson=?, student=?, result=? WHERE id = ?";
         try {
@@ -81,12 +86,14 @@ public class StudentsResultsRepo implements IRepository<StudentsResults> {
         finally {
             if (pstmt != null) {
                 pstmt.close();
+                connection.commit();
             }
         }
     }
 
     @Override
     public void delete(String id) throws SQLException {
+        connection.setAutoCommit(false);
         PreparedStatement pstmt = null;
         try {
             pstmt = connection.prepareStatement("DELETE FROM 'studentsresults' where id = ?");
@@ -99,6 +106,7 @@ public class StudentsResultsRepo implements IRepository<StudentsResults> {
         finally {
             if (pstmt != null) {
                 pstmt.close();
+                connection.commit();
             }
         }
     }

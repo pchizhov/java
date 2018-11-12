@@ -15,6 +15,7 @@ public class DatedLessonRepo implements IRepository<DatedLesson> {
 
     @Override
     public DatedLesson get(String id) throws SQLException {
+        connection.setAutoCommit(false);
         PreparedStatement pstmt = null;
         try {
             pstmt = connection.prepareStatement("SELECT * FROM 'datedlesson' WHERE id = ?");
@@ -35,12 +36,14 @@ public class DatedLessonRepo implements IRepository<DatedLesson> {
         finally {
             if (pstmt != null) {
                 pstmt.close();
+                connection.commit();
             }
         }
     }
 
     @Override
     public ArrayList<DatedLesson> list() throws SQLException{
+        connection.setAutoCommit(false);
         Statement stmt = null;
         try {
             stmt = connection.createStatement();
@@ -61,11 +64,13 @@ public class DatedLessonRepo implements IRepository<DatedLesson> {
         finally {
             if (stmt != null) {
                 stmt.close();
+                connection.commit();
             }
         }
     }
 
     public ArrayList<DatedLesson> dateList(String date) throws SQLException {
+        connection.setAutoCommit(false);
         PreparedStatement pstmt = null;
         try {
             pstmt = connection.prepareStatement("SELECT * FROM 'datedlesson' WHERE date = ?");
@@ -87,12 +92,14 @@ public class DatedLessonRepo implements IRepository<DatedLesson> {
         finally {
             if (pstmt != null) {
                 pstmt.close();
+                connection.commit();
             }
         }
     }
 
     @Override
     public void update(DatedLesson datedLesson) throws SQLException{
+        connection.setAutoCommit(false);
         PreparedStatement pstmt = null;
         String sql = "UPDATE 'datedLesson' SET id = ?, group=?, teacher=?, room=?, lesson=?, date=?, number=? WHERE login = ?";
         try {
@@ -113,12 +120,14 @@ public class DatedLessonRepo implements IRepository<DatedLesson> {
         finally {
             if (pstmt != null) {
                 pstmt.close();
+                connection.commit();
             }
         }
     }
 
     @Override
     public void delete(String id) throws SQLException {
+        connection.setAutoCommit(false);
         PreparedStatement pstmt = null;
         try {
             pstmt = connection.prepareStatement("DELETE FROM 'datedlesson' where id = ?");
@@ -131,6 +140,7 @@ public class DatedLessonRepo implements IRepository<DatedLesson> {
         finally {
             if (pstmt != null) {
                 pstmt.close();
+                connection.commit();
             }
         }
     }
