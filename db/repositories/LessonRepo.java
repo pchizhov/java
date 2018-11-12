@@ -12,12 +12,13 @@ public class LessonRepo implements IRepository<Lesson> {
 
     @Override
     public Lesson get(String id) throws SQLException {
-        connection.setAutoCommit(false);
         PreparedStatement pstmt = null;
         try {
+            connection.setAutoCommit(false);
             pstmt = connection.prepareStatement("SELECT * FROM 'lesson' WHERE name = ?");
             pstmt.setString(1, id);
             ResultSet rS = pstmt.executeQuery();
+            connection.commit();
             while (rS.next()) {
                 return new Lesson(rS.getString("name"), rS.getString("description"));
             }
@@ -31,18 +32,19 @@ public class LessonRepo implements IRepository<Lesson> {
         finally {
             if (pstmt != null) {
                 pstmt.close();
-                connection.commit();
+                connection.setAutoCommit(true);
             }
         }
     }
 
     @Override
     public ArrayList<Lesson> list() throws SQLException {
-        connection.setAutoCommit(false);
         Statement stmt = null;
         try {
+            connection.setAutoCommit(false);
             stmt = connection.createStatement();
             ResultSet rS = stmt.executeQuery("SELECT * FROM 'lesson'");
+            connection.commit();
             ArrayList<Lesson> list = new ArrayList<>();
             while (rS.next()) {
                 list.add(new Lesson(rS.getString("name"), rS.getString("description")));
@@ -57,22 +59,23 @@ public class LessonRepo implements IRepository<Lesson> {
         finally {
             if (stmt != null) {
                 stmt.close();
-                connection.commit();
+                connection.setAutoCommit(true);
             }
         }
     }
 
     @Override
     public void update(Lesson lesson) throws SQLException {
-        connection.setAutoCommit(false);
         PreparedStatement pstmt = null;
         String sql = "UPDATE 'lesson' SET name=?, description=? WHERE name = ?";
         try {
+            connection.setAutoCommit(false);
             pstmt = connection.prepareStatement(sql);
             pstmt.setString(1, lesson.getName());
             pstmt.setString(2, lesson.getDescription());
             pstmt.setString(3, lesson.getName());
             pstmt.executeUpdate();
+            connection.commit();
         }
         catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -81,19 +84,20 @@ public class LessonRepo implements IRepository<Lesson> {
         finally {
             if (pstmt != null) {
                 pstmt.close();
-                connection.commit();
+                connection.setAutoCommit(true);
             }
         }
     }
 
     @Override
     public void delete(String id) throws SQLException {
-        connection.setAutoCommit(false);
         PreparedStatement pstmt = null;
         try {
+            connection.setAutoCommit(false);
             pstmt = connection.prepareStatement("DELETE FROM 'lesson' where name = ?");
             pstmt.setString(1, id);
             pstmt.executeUpdate();
+            connection.commit();
         }
         catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -102,7 +106,7 @@ public class LessonRepo implements IRepository<Lesson> {
         finally {
             if (pstmt != null) {
                 pstmt.close();
-                connection.commit();
+                connection.setAutoCommit(true);
             }
         }
     }

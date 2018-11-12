@@ -12,12 +12,13 @@ public class GroupRepo implements IRepository<Group> {
 
     @Override
     public Group get(String id) throws SQLException {
-        connection.setAutoCommit(false);
         PreparedStatement pstmt = null;
         try {
+            connection.setAutoCommit(false);
             pstmt = connection.prepareStatement("SELECT * FROM 'group' WHERE number = ?");
             pstmt.setString(1, id);
             ResultSet rS = pstmt.executeQuery();
+            connection.commit();
             while (rS.next()) {
                 return new Group(rS.getString("number"), rS.getString("level"));
             }
@@ -31,18 +32,19 @@ public class GroupRepo implements IRepository<Group> {
         finally {
             if (pstmt != null) {
                 pstmt.close();
-                connection.commit();
+                connection.setAutoCommit(true);
             }
         }
     }
 
     @Override
     public ArrayList<Group> list() throws SQLException {
-        connection.setAutoCommit(false);
         Statement stmt = null;
         try {
+            connection.setAutoCommit(false);
             stmt = connection.createStatement();
             ResultSet rS = stmt.executeQuery("SELECT * FROM 'group'");
+            connection.commit();
             ArrayList<Group> list = new ArrayList<>();
             while (rS.next()) {
                 list.add(new Group(rS.getString("number"), rS.getString("level")));
@@ -57,22 +59,23 @@ public class GroupRepo implements IRepository<Group> {
         finally {
             if (stmt != null) {
                 stmt.close();
-                connection.commit();
+                connection.setAutoCommit(true);
             }
         }
     }
 
     @Override
     public void update(Group group) throws SQLException {
-        connection.setAutoCommit(false);
         PreparedStatement pstmt = null;
         String sql = "UPDATE 'group' SET number=?, level=? WHERE number = ?";
         try {
+            connection.setAutoCommit(false);
             pstmt = connection.prepareStatement(sql);
             pstmt.setString(1, group.getNumber());
             pstmt.setString(2, group.getLevel());
             pstmt.setString(3, group.getNumber());
             pstmt.executeUpdate();
+            connection.commit();
         }
         catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -81,19 +84,20 @@ public class GroupRepo implements IRepository<Group> {
         finally {
             if (pstmt != null) {
                 pstmt.close();
-                connection.commit();
+                connection.setAutoCommit(true);
             }
         }
     }
 
     @Override
     public void delete(String id) throws SQLException {
-        connection.setAutoCommit(false);
         PreparedStatement pstmt = null;
         try {
+            connection.setAutoCommit(false);
             pstmt = connection.prepareStatement("DELETE FROM 'group' where number = ?");
             pstmt.setString(1, id);
             pstmt.executeUpdate();
+            connection.commit();
         }
         catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -102,7 +106,7 @@ public class GroupRepo implements IRepository<Group> {
         finally {
             if (pstmt != null) {
                 pstmt.close();
-                connection.commit();
+                connection.setAutoCommit(true);
             }
         }
     }
