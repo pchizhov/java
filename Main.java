@@ -1,8 +1,8 @@
-package ui;
-
 import db.repositories.UserRepo;
 import bl.LoginManager;
 import bl.DatabaseManager;
+import ui.Authorisation;
+import ui.Menu;
 
 public class Main {
 

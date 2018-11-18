@@ -8,7 +8,7 @@ public class Menu {
 
     Context _ctx = Context.get();
 
-    protected void start() {
+    public void start() {
         System.out.println("Choose the option:\n" +
                 "d - show particular date timetable\n" +
                 "t - show today timetable\n" +
@@ -17,7 +17,7 @@ public class Menu {
         this.handleOption(reader.next());
     }
 
-    protected void handleOption(String option) {
+    private void handleOption(String option) {
         DatedLessonPrinter dLP = new DatedLessonPrinter();
         switch (option) {
             case "d":
