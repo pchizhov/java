@@ -10,26 +10,21 @@ import db.repositories.DatedLessonRepo;
 
 public class DayTimetableManager {
 
-    final DatedLessonRepo dLR;
+    private final DatedLessonRepo dLR;
 
     public DayTimetableManager(DatedLessonRepo dLR){
         this.dLR = dLR;
     }
 
     public ArrayList<BLDatedLesson> getList(String date){
-        ArrayList<DatedLesson> list = null;
-        try {
-            list = dLR.dateList(date);
-        }
-        catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
+        ArrayList<DatedLesson> list = dLR.dateList(date);
         ArrayList<BLDatedLesson> blist = new ArrayList<>();
-        for (DatedLesson lesson : list) {
-            blist.add(Mapper.map(lesson));
-        }
-        if (blist.size() != 0)
+        if (list.size() != 0) {
+            for (DatedLesson lesson : list) {
+                blist.add(Mapper.map(lesson));
+            }
             blist.sort(Comparator.comparing(l -> l.getNumber()));
+        }
         return blist;
     }
 

@@ -1,4 +1,6 @@
-package ui;
+package ui.console;
+
+import ui.Context;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -6,7 +8,7 @@ import java.util.Scanner;
 
 public class Menu {
 
-    Context _ctx = Context.get();
+    private Context _ctx = Context.get();
 
     public void start() {
         System.out.println("Choose the option:\n" +

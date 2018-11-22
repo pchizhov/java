@@ -1,15 +1,16 @@
-package ui;
+package ui.console;
 
 import java.lang.System;
 import java.util.Scanner;
 
 import bl.entities.BLUser;
 import bl.LoginManager;
+import ui.Context;
 
 public class Authorisation {
 
     private final LoginManager lM;
-    Context _ctx = Context.get();
+    private Context _ctx = Context.get();
 
     public Authorisation(LoginManager lM){
         this.lM = lM;

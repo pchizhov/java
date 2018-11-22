@@ -1,9 +1,10 @@
-package ui;
+package ui.console;
 
 import bl.DayTimetableManager;
 import bl.entities.BLDatedLesson;
 import bl.entities.Role;
 import db.repositories.DatedLessonRepo;
+import ui.Context;
 
 import java.util.ArrayList;
 
@@ -13,8 +14,10 @@ public class DatedLessonPrinter {
 
     public void print(String date) {
         ArrayList<BLDatedLesson> datesList = new DayTimetableManager(new DatedLessonRepo()).getList(date);
-        if (datesList.size() == 0)
+        if (datesList.size() == 0) {
             System.out.println("No lessons found for this date.");
+            return;
+        }
         for (BLDatedLesson datedLesson : datesList) {
             if (_ctx.getUser().getRole() == Role.Student &&
                     _ctx.getUser().getGroup().getNumber().equals(datedLesson.getGroup().getNumber()))

@@ -1,5 +1,6 @@
 package db.repositories;
 
+import db.AdvConnection;
 import db.Connector;
 import db.entities.Lesson;
 
@@ -8,106 +9,76 @@ import java.util.ArrayList;
 
 public class LessonRepo implements IRepository<Lesson> {
 
-    private Connection connection = Connector.getConnection();
+    private AdvConnection connection = Connector.getConnection();
 
     @Override
     public Lesson get(String id) throws SQLException {
-        PreparedStatement pstmt = null;
         try {
-            connection.setAutoCommit(false);
-            pstmt = connection.prepareStatement("SELECT * FROM 'lesson' WHERE name = ?");
-            pstmt.setString(1, id);
-            ResultSet rS = pstmt.executeQuery();
-            connection.commit();
-            while (rS.next()) {
+            ResultSet rS = connection.resultTransaction(() -> {
+                PreparedStatement pstmt = connection.prepareStatement("SELECT * FROM 'lesson' WHERE name = ?");
+                pstmt.setString(1, id);
+                return pstmt.executeQuery();
+            });
+            if (rS.next()) {
                 return new Lesson(rS.getString("name"), rS.getString("description"));
             }
             return null;
         }
-        catch (SQLException e) {
+        catch (Exception e) {
             System.out.println(e.getMessage());
-            connection.rollback();
             return null;
-        }
-        finally {
-            if (pstmt != null) {
-                pstmt.close();
-                connection.setAutoCommit(true);
-            }
         }
     }
 
     @Override
     public ArrayList<Lesson> list() throws SQLException {
-        Statement stmt = null;
         try {
-            connection.setAutoCommit(false);
-            stmt = connection.createStatement();
-            ResultSet rS = stmt.executeQuery("SELECT * FROM 'lesson'");
-            connection.commit();
+            ResultSet rS = connection.resultTransaction(() -> {
+                Statement stmt = connection.createStatement();
+                return stmt.executeQuery("SELECT * FROM 'lesson'");
+            });
             ArrayList<Lesson> list = new ArrayList<>();
             while (rS.next()) {
                 list.add(new Lesson(rS.getString("name"), rS.getString("description")));
             }
             return list;
         }
-        catch (SQLException e) {
+        catch (Exception e) {
             System.out.println(e.getMessage());
-            connection.rollback();
             return null;
-        }
-        finally {
-            if (stmt != null) {
-                stmt.close();
-                connection.setAutoCommit(true);
-            }
         }
     }
 
     @Override
     public void update(Lesson lesson) throws SQLException {
-        PreparedStatement pstmt = null;
         String sql = "UPDATE 'lesson' SET name=?, description=? WHERE name = ?";
         try {
-            connection.setAutoCommit(false);
-            pstmt = connection.prepareStatement(sql);
-            pstmt.setString(1, lesson.getName());
-            pstmt.setString(2, lesson.getDescription());
-            pstmt.setString(3, lesson.getName());
-            pstmt.executeUpdate();
-            connection.commit();
+            connection.voidTransaction(() -> {
+                PreparedStatement pstmt = connection.prepareStatement(sql);
+                pstmt.setString(1, lesson.getName());
+                pstmt.setString(2, lesson.getDescription());
+                pstmt.setString(3, lesson.getName());
+                pstmt.executeUpdate();
+                return null;
+            });
         }
-        catch (SQLException e) {
+        catch (Exception e) {
             System.out.println(e.getMessage());
-            connection.rollback();
-        }
-        finally {
-            if (pstmt != null) {
-                pstmt.close();
-                connection.setAutoCommit(true);
-            }
         }
     }
 
     @Override
     public void delete(String id) throws SQLException {
-        PreparedStatement pstmt = null;
         try {
-            connection.setAutoCommit(false);
-            pstmt = connection.prepareStatement("DELETE FROM 'lesson' where name = ?");
-            pstmt.setString(1, id);
-            pstmt.executeUpdate();
-            connection.commit();
+            connection.voidTransaction(() -> {
+                PreparedStatement pstmt = connection.prepareStatement("DELETE FROM 'lesson' where name = ?");
+                pstmt.setString(1, id);
+                pstmt.executeUpdate();
+                return null;
+            });
         }
-        catch (SQLException e) {
+        catch (Exception e) {
             System.out.println(e.getMessage());
-            connection.rollback();
-        }
-        finally {
-            if (pstmt != null) {
-                pstmt.close();
-                connection.setAutoCommit(true);
-            }
         }
     }
 }
