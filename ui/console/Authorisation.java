@@ -3,7 +3,7 @@ package ui.console;
 import java.lang.System;
 import java.util.Scanner;
 
-import bl.entities.BLUser;
+import bl.entities.User;
 import bl.LoginManager;
 import ui.Context;
 
@@ -24,7 +24,7 @@ public class Authorisation {
         System.out.print("Password: ");
         String password = reader.next();
 
-        BLUser user = lM.signIn(login, password);
+        User user = lM.signIn(login, password);
 
         if (user == null) {
             System.out.println("Wrong data, try again.\n");

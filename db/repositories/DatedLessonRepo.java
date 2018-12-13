@@ -2,12 +2,12 @@ package db.repositories;
 
 import db.AdvConnection;
 import db.Connector;
-import db.entities.DatedLesson;
+import db.entities.DatedLessonDBE;
 
 import java.sql.*;
 import java.util.ArrayList;
 
-public class DatedLessonRepo implements IRepository<DatedLesson> {
+public class DatedLessonRepo implements IRepository<DatedLessonDBE> {
 
     private AdvConnection connection = Connector.getConnection();
     private GroupRepo gR = new GroupRepo();
@@ -15,7 +15,7 @@ public class DatedLessonRepo implements IRepository<DatedLesson> {
     private LessonRepo lR = new LessonRepo();
 
     @Override
-    public DatedLesson get(String id) throws SQLException {
+    public DatedLessonDBE get(String id) throws SQLException {
         try {
             ResultSet rS = connection.resultTransaction(() -> {
                 PreparedStatement p = connection.prepareStatement("SELECT * FROM 'datedlesson' WHERE id = ?");
@@ -23,7 +23,7 @@ public class DatedLessonRepo implements IRepository<DatedLesson> {
                 return p.executeQuery();
             });
             if (rS.next()) {
-                return new DatedLesson(rS.getInt("id"), gR.get(rS.getString("group")),
+                return new DatedLessonDBE(rS.getInt("id"), gR.get(rS.getString("group")),
                         uR.get(rS.getString("teacher")),
                         rS.getString("room"), lR.get(rS.getString("lesson")),
                         rS.getString("date"), rS.getInt("number"));
@@ -37,15 +37,15 @@ public class DatedLessonRepo implements IRepository<DatedLesson> {
     }
 
     @Override
-    public ArrayList<DatedLesson> list() throws SQLException{
+    public ArrayList<DatedLessonDBE> list() throws SQLException{
         try {
             ResultSet rS = connection.resultTransaction(() -> {
                 Statement stmt = connection.createStatement();
                 return stmt.executeQuery("SELECT * FROM 'datedlesson'");
             });
-            ArrayList<DatedLesson> list = new ArrayList<>();
+            ArrayList<DatedLessonDBE> list = new ArrayList<>();
             while (rS.next()) {
-                list.add(new DatedLesson(rS.getInt("id"), gR.get(rS.getString("group")),
+                list.add(new DatedLessonDBE(rS.getInt("id"), gR.get(rS.getString("group")),
                         uR.get(rS.getString("teacher")),
                         rS.getString("room"), lR.get(rS.getString("lesson")),
                         rS.getString("date"), rS.getInt("number")));
@@ -58,16 +58,16 @@ public class DatedLessonRepo implements IRepository<DatedLesson> {
         }
     }
 
-    public ArrayList<DatedLesson> dateList(String date) {
+    public ArrayList<DatedLessonDBE> dateList(String date) {
         try {
             ResultSet rS = connection.resultTransaction(() -> {
                 PreparedStatement pstmt = connection.prepareStatement("SELECT * FROM 'datedlesson' WHERE date = ?");
                 pstmt.setString(1, date);
                 return pstmt.executeQuery();
             });
-            ArrayList<DatedLesson> list = new ArrayList<>();
+            ArrayList<DatedLessonDBE> list = new ArrayList<>();
             while (rS.next()) {
-                list.add(new DatedLesson(rS.getInt("id"),
+                list.add(new DatedLessonDBE(rS.getInt("id"),
                         gR.get(rS.getString("group")), uR.get(rS.getString("teacher")),
                         rS.getString("room"), lR.get(rS.getString("lesson")),
                         rS.getString("date"), rS.getInt("number")));
@@ -81,7 +81,7 @@ public class DatedLessonRepo implements IRepository<DatedLesson> {
     }
 
     @Override
-    public void update(DatedLesson datedLesson) throws SQLException{
+    public void update(DatedLessonDBE datedLesson) throws SQLException{
         String sql = "UPDATE 'datedLesson' SET id = ?, group=?, teacher=?, room=?, lesson=?, date=?, number=? WHERE login = ?";
         try {
             connection.voidTransaction(() -> {

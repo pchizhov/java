@@ -1,12 +1,12 @@
 package ui;
 
-import bl.entities.BLUser;
+import bl.entities.User;
 
 public class Context {
 
     private static Context _context = new Context();
 
-    private BLUser user;
+    private User user;
 
     private Context(){}
 
@@ -14,11 +14,11 @@ public class Context {
         return _context;
     }
 
-    public BLUser getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(BLUser user) {
+    public void setUser(User user) {
         this.user = user;
     }
 }

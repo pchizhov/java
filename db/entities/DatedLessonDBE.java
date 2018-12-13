@@ -1,17 +1,19 @@
-package bl.entities;
+package db.entities;
 
-public class BLDatedLesson {
+import java.util.Date;
+
+public class DatedLessonDBE {
 
     private int id;
-    private BLGroup group;
-    private BLUser teacher;
+    private GroupDBE group;
+    private UserDBE teacher;
     private String room;
-    private BLLesson lesson;
+    private LessonDBE lesson;
     private String date;
     private int number;
 
-    public BLDatedLesson(int id, BLGroup group, BLUser teacher,
-                         String room, BLLesson lesson, String date, int number) {
+    public DatedLessonDBE(int id, GroupDBE group, UserDBE teacher, String room,
+                       LessonDBE lesson, String date, int number) {
         this.id = id;
         this.group = group;
         this.teacher = teacher;
@@ -25,11 +27,11 @@ public class BLDatedLesson {
         return id;
     }
 
-    public BLGroup getGroup() {
+    public GroupDBE getGroup() {
         return group;
     }
 
-    public BLUser getTeacher() {
+    public UserDBE getTeacher() {
         return teacher;
     }
 
@@ -37,7 +39,7 @@ public class BLDatedLesson {
         return room;
     }
 
-    public BLLesson getLesson() {
+    public LessonDBE getLesson() {
         return lesson;
     }
 

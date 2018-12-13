@@ -1,6 +1,4 @@
-package db.entities;
-
-import java.util.Date;
+package bl.entities;
 
 public class DatedLesson {
 
@@ -12,8 +10,8 @@ public class DatedLesson {
     private String date;
     private int number;
 
-    public DatedLesson(int id, Group group, User teacher, String room,
-                       Lesson lesson, String date, int number) {
+    public DatedLesson(int id, Group group, User teacher,
+                         String room, Lesson lesson, String date, int number) {
         this.id = id;
         this.group = group;
         this.teacher = teacher;

@@ -2,18 +2,18 @@ package db.repositories;
 
 import db.AdvConnection;
 import db.Connector;
-import db.entities.User;
+import db.entities.UserDBE;
 
 import java.sql.*;
 import java.util.ArrayList;
 
-public class UserRepo implements IRepository<User> {
+public class UserRepo implements IRepository<UserDBE> {
 
     private AdvConnection connection = Connector.getConnection();
     private GroupRepo gR = new GroupRepo();
 
     @Override
-    public User get(String id) throws SQLException {
+    public UserDBE get(String id) throws SQLException {
         try {
             ResultSet rS = connection.resultTransaction(() -> {
                 PreparedStatement pstmt = connection.prepareStatement("SELECT * FROM 'user' where login = ?");
@@ -21,7 +21,7 @@ public class UserRepo implements IRepository<User> {
                 return pstmt.executeQuery();
             });
             if(rS.next()) {
-                return new User(rS.getString("login"), rS.getString("password"),
+                return new UserDBE(rS.getString("login"), rS.getString("password"),
                         rS.getString("name"), rS.getString("role"),
                         gR.get(rS.getString("group")));
             }
@@ -34,15 +34,15 @@ public class UserRepo implements IRepository<User> {
     }
 
     @Override
-    public ArrayList<User> list() throws SQLException {
+    public ArrayList<UserDBE> list() throws SQLException {
         try {
             ResultSet rS = connection.resultTransaction(() -> {
                 Statement stmt = connection.createStatement();
                 return stmt.executeQuery("SELECT * FROM 'user'");
             });
-            ArrayList<User> list = new ArrayList<>();
+            ArrayList<UserDBE> list = new ArrayList<>();
             while (rS.next()) {
-                list.add(new User(rS.getString("login"), rS.getString("password"),
+                list.add(new UserDBE(rS.getString("login"), rS.getString("password"),
                         rS.getString("name"), rS.getString("role"),
                         gR.get(rS.getString("group"))));
             }
@@ -55,7 +55,7 @@ public class UserRepo implements IRepository<User> {
     }
 
     @Override
-    public void update(User user) throws SQLException {
+    public void update(UserDBE user) throws SQLException {
         String sql = "UPDATE 'user' SET login=?, password=?, name=?, role=?, group=? WHERE login = ?";
         try {
             connection.voidTransaction(() -> {

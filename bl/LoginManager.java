@@ -1,8 +1,8 @@
 package bl;
 
 import db.repositories.UserRepo;
-import db.entities.User;
-import bl.entities.BLUser;
+import db.entities.UserDBE;
+import bl.entities.User;
 
 import java.sql.SQLException;
 
@@ -14,8 +14,8 @@ public class LoginManager{
         this.uR = uR;
     }
 
-    public BLUser signIn(String enteredLogin, String enteredPassword){
-        User account = null;
+    public User signIn(String enteredLogin, String enteredPassword){
+        UserDBE account = null;
         try {
             account = uR.get(enteredLogin);
         }

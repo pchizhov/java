@@ -1,14 +1,14 @@
 package db.entities;
 
-public class User {
+public class UserDBE {
 
     private String login;
     private String password;
     private String name;
     private String role;
-    private Group group;
+    private GroupDBE group;
 
-    public User(String login, String password, String name, String role, Group group){
+    public UserDBE(String login, String password, String name, String role, GroupDBE group){
         this.login = login;
         this.password = password;
         this.name = name;
@@ -32,7 +32,7 @@ public class User {
         return role;
     }
 
-    public Group getGroup() {
+    public GroupDBE getGroup() {
         return group;
     }
 }

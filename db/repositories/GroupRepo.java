@@ -1,18 +1,18 @@
 package db.repositories;
 
 import db.AdvConnection;
-import db.entities.Group;
+import db.entities.GroupDBE;
 import db.Connector;
 
 import java.util.ArrayList;
 import java.sql.*;
 
-public class GroupRepo implements IRepository<Group> {
+public class GroupRepo implements IRepository<GroupDBE> {
 
     private AdvConnection connection = Connector.getConnection();
 
     @Override
-    public Group get(String id) throws SQLException {
+    public GroupDBE get(String id) throws SQLException {
         try {
             ResultSet rS = connection.resultTransaction(() -> {
                 PreparedStatement pstmt = connection.prepareStatement("SELECT * FROM 'group' WHERE number = ?");
@@ -20,7 +20,7 @@ public class GroupRepo implements IRepository<Group> {
                 return pstmt.executeQuery();
             });
             if (rS.next()) {
-                return new Group(rS.getString("number"), rS.getString("level"));
+                return new GroupDBE(rS.getString("number"), rS.getString("level"));
             }
             return null;
         }
@@ -31,15 +31,15 @@ public class GroupRepo implements IRepository<Group> {
     }
 
     @Override
-    public ArrayList<Group> list() throws SQLException {
+    public ArrayList<GroupDBE> list() throws SQLException {
         try {
             ResultSet rS = connection.resultTransaction(() -> {
                 Statement stmt = connection.createStatement();
                 return stmt.executeQuery("SELECT * FROM 'group'");
             });
-            ArrayList<Group> list = new ArrayList<>();
+            ArrayList<GroupDBE> list = new ArrayList<>();
             while (rS.next()) {
-                list.add(new Group(rS.getString("number"), rS.getString("level")));
+                list.add(new GroupDBE(rS.getString("number"), rS.getString("level")));
             }
             return list;
         }
@@ -50,7 +50,7 @@ public class GroupRepo implements IRepository<Group> {
     }
 
     @Override
-    public void update(Group group) throws SQLException {
+    public void update(GroupDBE group) throws SQLException {
         String sql = "UPDATE 'group' SET number=?, level=? WHERE number = ?";
         try {
             connection.voidTransaction(() -> {

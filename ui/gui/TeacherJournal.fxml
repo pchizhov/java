@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.gui.TeacherJournalController">
+   <children>
+      <Label fx:id="greeting" layoutX="14.0" layoutY="14.0" underline="true" />
+      <Button layoutX="14.0" layoutY="38.0" mnemonicParsing="false" onAction="#showTable" text="Show the table" />
+      <ProgressBar fx:id="progressBar" layoutX="132.0" layoutY="38.0" prefHeight="27.0" prefWidth="200.0" progress="0.0" />
+   </children>
+</AnchorPane>

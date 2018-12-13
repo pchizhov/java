@@ -1,20 +1,21 @@
-package bl.entities;
+package db.entities;
 
-public class BLGroup {
+public class GroupDBE {
 
     private String number;
     private String level;
 
-    public BLGroup(String number, String level) {
+    public GroupDBE(String number, String level){
         this.number = number;
         this.level = level;
     }
 
-    public String getNumber() {
+    public String getNumber(){
         return number;
     }
 
-    public String getLevel() {
+    public String getLevel(){
         return level;
     }
+
 }

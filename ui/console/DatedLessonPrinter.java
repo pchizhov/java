@@ -1,7 +1,7 @@
 package ui.console;
 
 import bl.DayTimetableManager;
-import bl.entities.BLDatedLesson;
+import bl.entities.DatedLesson;
 import bl.entities.Role;
 import db.repositories.DatedLessonRepo;
 import ui.Context;
@@ -13,12 +13,12 @@ public class DatedLessonPrinter {
     private Context _ctx = Context.get();
 
     public void print(String date) {
-        ArrayList<BLDatedLesson> datesList = new DayTimetableManager(new DatedLessonRepo()).getList(date);
+        ArrayList<DatedLesson> datesList = new DayTimetableManager(new DatedLessonRepo()).getList(date);
         if (datesList.size() == 0) {
             System.out.println("No lessons found for this date.");
             return;
         }
-        for (BLDatedLesson datedLesson : datesList) {
+        for (DatedLesson datedLesson : datesList) {
             if (_ctx.getUser().getRole() == Role.Student &&
                     _ctx.getUser().getGroup().getNumber().equals(datedLesson.getGroup().getNumber()))
                 this.printOne(datedLesson);
@@ -28,7 +28,7 @@ public class DatedLessonPrinter {
         }
     }
 
-    public void printOne(BLDatedLesson datedLesson) {
+    public void printOne(DatedLesson datedLesson) {
         System.out.println("Lesson number: " + datedLesson.getNumber());
         System.out.println("Lesson name: " + datedLesson.getLesson().getName());
         System.out.println("Room number: " + datedLesson.getRoom());

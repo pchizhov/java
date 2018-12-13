@@ -2,19 +2,19 @@ package db.repositories;
 
 import db.AdvConnection;
 import db.Connector;
-import db.entities.StudentsResults;
+import db.entities.StudentsResultsDBE;
 
 import java.sql.*;
 import java.util.ArrayList;
 
-public class StudentsResultsRepo implements IRepository<StudentsResults> {
+public class StudentsResultsRepo implements IRepository<StudentsResultsDBE> {
 
     private AdvConnection connection = Connector.getConnection();
     private UserRepo uR = new UserRepo();
     private DatedLessonRepo dLR = new DatedLessonRepo();
 
     @Override
-    public StudentsResults get(String id) throws SQLException {
+    public StudentsResultsDBE get(String id) throws SQLException {
         try {
             ResultSet rS = connection.resultTransaction(() -> {
                 PreparedStatement pstmt = connection.prepareStatement("SELECT * FROM 'studentsresults' WHERE id = ?");
@@ -22,7 +22,7 @@ public class StudentsResultsRepo implements IRepository<StudentsResults> {
                 return pstmt.executeQuery();
             });
             if (rS.next()) {
-                return new StudentsResults(rS.getInt("id"), dLR.get(rS.getString("datedlesson")),
+                return new StudentsResultsDBE(rS.getInt("id"), dLR.get(rS.getString("datedlesson")),
                         uR.get(rS.getString("student")),
                         rS.getString("result"));
             }
@@ -35,15 +35,15 @@ public class StudentsResultsRepo implements IRepository<StudentsResults> {
     }
 
     @Override
-    public ArrayList<StudentsResults> list() throws SQLException {
+    public ArrayList<StudentsResultsDBE> list() throws SQLException {
         try {
             ResultSet rS = connection.resultTransaction(() -> {
                 Statement stmt = connection.createStatement();
                 return stmt.executeQuery("SELECT * FROM 'studentsresults'");
             });
-            ArrayList<StudentsResults> list = new ArrayList<>();
+            ArrayList<StudentsResultsDBE> list = new ArrayList<>();
             while (rS.next()) {
-                list.add(new StudentsResults(rS.getInt("id"), dLR.get(rS.getString("datedlesson")),
+                list.add(new StudentsResultsDBE(rS.getInt("id"), dLR.get(rS.getString("datedlesson")),
                         uR.get(rS.getString("student")),
                         rS.getString("result")));
             }
@@ -56,7 +56,7 @@ public class StudentsResultsRepo implements IRepository<StudentsResults> {
     }
 
     @Override
-    public void update(StudentsResults studentsResults) throws SQLException {
+    public void update(StudentsResultsDBE studentsResults) throws SQLException {
         String sql = "UPDATE 'studentsresults' SET id = ?, datedlesson=?, student=?, result=? WHERE id = ?";
         try {
             connection.voidTransaction(() -> {

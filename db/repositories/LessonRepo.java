@@ -2,17 +2,17 @@ package db.repositories;
 
 import db.AdvConnection;
 import db.Connector;
-import db.entities.Lesson;
+import db.entities.LessonDBE;
 
 import java.sql.*;
 import java.util.ArrayList;
 
-public class LessonRepo implements IRepository<Lesson> {
+public class LessonRepo implements IRepository<LessonDBE> {
 
     private AdvConnection connection = Connector.getConnection();
 
     @Override
-    public Lesson get(String id) throws SQLException {
+    public LessonDBE get(String id) throws SQLException {
         try {
             ResultSet rS = connection.resultTransaction(() -> {
                 PreparedStatement pstmt = connection.prepareStatement("SELECT * FROM 'lesson' WHERE name = ?");
@@ -20,7 +20,7 @@ public class LessonRepo implements IRepository<Lesson> {
                 return pstmt.executeQuery();
             });
             if (rS.next()) {
-                return new Lesson(rS.getString("name"), rS.getString("description"));
+                return new LessonDBE(rS.getString("name"), rS.getString("description"));
             }
             return null;
         }
@@ -31,15 +31,15 @@ public class LessonRepo implements IRepository<Lesson> {
     }
 
     @Override
-    public ArrayList<Lesson> list() throws SQLException {
+    public ArrayList<LessonDBE> list() throws SQLException {
         try {
             ResultSet rS = connection.resultTransaction(() -> {
                 Statement stmt = connection.createStatement();
                 return stmt.executeQuery("SELECT * FROM 'lesson'");
             });
-            ArrayList<Lesson> list = new ArrayList<>();
+            ArrayList<LessonDBE> list = new ArrayList<>();
             while (rS.next()) {
-                list.add(new Lesson(rS.getString("name"), rS.getString("description")));
+                list.add(new LessonDBE(rS.getString("name"), rS.getString("description")));
             }
             return list;
         }
@@ -50,7 +50,7 @@ public class LessonRepo implements IRepository<Lesson> {
     }
 
     @Override
-    public void update(Lesson lesson) throws SQLException {
+    public void update(LessonDBE lesson) throws SQLException {
         String sql = "UPDATE 'lesson' SET name=?, description=? WHERE name = ?";
         try {
             connection.voidTransaction(() -> {

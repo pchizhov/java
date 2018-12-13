@@ -1,14 +1,13 @@
-package db.entities;
+package bl.entities;
 
 public class StudentsResults {
 
     private int id;
     private DatedLesson datedLesson;
     private User student;
-    private String result;
+    private Result result;
 
-    public StudentsResults(int id, DatedLesson datedLesson, User student,
-                           String result) {
+    public StudentsResults(int id, DatedLesson datedLesson, User student, Result result) {
         this.id = id;
         this.datedLesson = datedLesson;
         this.student = student;
@@ -27,8 +26,7 @@ public class StudentsResults {
         return student;
     }
 
-    public String getResult() {
+    public Result getResult() {
         return result;
     }
-
 }

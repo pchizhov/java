@@ -4,8 +4,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-import db.entities.DatedLesson;
-import bl.entities.BLDatedLesson;
+import db.entities.DatedLessonDBE;
+import bl.entities.DatedLesson;
 import db.repositories.DatedLessonRepo;
 
 public class DayTimetableManager {
@@ -16,11 +16,11 @@ public class DayTimetableManager {
         this.dLR = dLR;
     }
 
-    public ArrayList<BLDatedLesson> getList(String date){
-        ArrayList<DatedLesson> list = dLR.dateList(date);
-        ArrayList<BLDatedLesson> blist = new ArrayList<>();
+    public ArrayList<DatedLesson> getList(String date){
+        ArrayList<DatedLessonDBE> list = dLR.dateList(date);
+        ArrayList<DatedLesson> blist = new ArrayList<>();
         if (list.size() != 0) {
-            for (DatedLesson lesson : list) {
+            for (DatedLessonDBE lesson : list) {
                 blist.add(Mapper.map(lesson));
             }
             blist.sort(Comparator.comparing(l -> l.getNumber()));

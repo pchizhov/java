@@ -1,13 +1,13 @@
 package bl.entities;
 
-public class BLUser {
+public class User {
 
     private String login;
     private String name;
     private Role role;
-    private BLGroup group;
+    private Group group;
 
-    public BLUser(String login, String name, Role role, BLGroup group) {
+    public User(String login, String name, Role role, Group group) {
         this.login = login;
         this.name = name;
         this.role = role;
@@ -26,7 +26,7 @@ public class BLUser {
         return role;
     }
 
-    public BLGroup getGroup() {
+    public Group getGroup() {
         return group;
     }
 }
